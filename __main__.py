@@ -30,14 +30,17 @@ wordTree = SearchTree()
 
 def process_command(inp):
     inp: str # len = 1
+    if inp == '+':
+        c.previos_mode = c.mode
+        c.mode = 'command'
+        return
+    if inp in [str(i) for i in range(1, 10+1)]:
+        c.previos_mode = c.mode
+        c.mode = 'motion'
+        c.motion_amount = int(inp)
+        return
+
     if c.mode == 'insert':
-        if inp == '+':
-            c.mode = 'command'
-            return
-        if inp in [str(i) for i in range(1, 10+1)]:
-            c.mode = 'motion'
-            c.motion_amount = int(inp)
-            return
         if input == ' ':
             wordTree.insert(c.get_current_word())
         b.write_char(inp)
@@ -45,7 +48,6 @@ def process_command(inp):
     if c.mode == 'command':
         command_key = inp
         vimCommandMap[command_key]()
-        c.mode = 'insert'
         return
 
 
@@ -53,7 +55,9 @@ def process_command(inp):
     if c.mode == 'motion':
         command_key = inp
         vimMotionMap[command_key](int(c.motion_amount))
-        c.mode = 'insert'
+        temp = c.mode
+        c.mode = c.previos_mode
+        c.previos_mode = temp
 
 
     # if inp[0] == 'm':

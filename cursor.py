@@ -14,6 +14,7 @@ class Cursor:
         self.GrabStartPos_x = x
         self.GrabStartPos_y = y
         self.mode = 'insert'
+        self.previos_mode = 'insert'
         self.board_on = None
         self.motion_amount = 0
 

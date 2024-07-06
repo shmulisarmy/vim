@@ -245,6 +245,7 @@ while True:
     b.display()
     clearScreen()
     currentChar = sys.stdin.read(1)
+    print(f"{currentChar = }")
     if currentChar == '\x03':  # Handle Ctrl+C to exit the loop gracefully
         break
     clearScreen()

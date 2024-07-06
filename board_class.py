@@ -11,7 +11,6 @@ class board:
         if cursor.mode == 'grab':
             self.boardCopy =  self.TextArea
             for i, j in cursor.selectedTextInReverse():
-                print('i', i, 'j', j)
                 self.TextArea[i][j] = blue(self.TextArea[i][j])
 
         else:
@@ -40,7 +39,6 @@ class board:
         cursor: 'Cursor' = self.cursorList[0]
         if cursor.mode == 'grab':
             for i, j in cursor.selectedTextInReverse():
-                print(f"{i = } {j = }")
                 del self.TextArea[i][j]
 
             cursor.y = cursor.GrabStartPos_y
@@ -65,7 +63,6 @@ class board:
 
     def r(self, char):
         cursor: 'Cursor' = self.cursorList[0]
-        if Cursor.mode: print()
 
     def deleteInside(self, charSet: tuple[str]):
         cursor = self.cursorList[0]

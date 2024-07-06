@@ -6,7 +6,7 @@ class Cursor:
         when in mode:
             grab  -> starting pos, current pos
     """
-    modes = ['insert', 'command', 'insertNumber', 'one command', 'grab']
+    modes = ['insert', 'command', 'insertNumber', 'one command', 'grab', 'delete']
     mode = 'insert'
     def __init__(self, x = 0, y = 0) -> None:
         self.x = x

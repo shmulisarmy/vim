@@ -192,17 +192,6 @@ def process_command(inp):
             vimCommandMap[inp]()
 
 
-
-
-
-
-
-b = board()
-c = Cursor()
-b.cursorList.append(c)
-c.board_on = b.TextArea
-
-
 vimMotionMap = {
     'j': c.j,
     'k': c.k,
@@ -233,6 +222,10 @@ vimregisters = {
 
 
 
+b = board()
+c = Cursor()
+b.cursorList.append(c)
+c.board_on = b.TextArea
 
 
 

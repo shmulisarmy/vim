@@ -1,6 +1,19 @@
+import sys
 from typing_extensions import Text
 from colors import blue
 from searchTree import SearchTree
+
+#for entering text
+import sys
+import tty
+import termios
+
+
+fd = sys.stdin.fileno()
+old_settings = termios.tcgetattr(fd)
+tty.setraw(fd)
+#for entering text
+
 
 
 wordTree = SearchTree()
@@ -220,14 +233,26 @@ def process_command(inp):
             vimCommandMap[inp]()
 
 
+clearScreen =  lambda: print("\033[H\033[J", end='')
 
 
 
 while True:
+    clearScreen()
     print(" - - - - - -")
+    clearScreen()
     print(wordTree.root)
+    clearScreen()
     print(f"{c.get_current_word() = }")
+    clearScreen()
     print(wordTree.firstNThatStartWith(5, c.get_current_word()))
+    clearScreen()
     print(" - - - - - -")
+    clearScreen()
     b.display()
-    process_command(input(": "))
+    clearScreen()
+    currentChar = sys.stdin.read(1)
+    if currentChar == '\x03':  # Handle Ctrl+C to exit the loop gracefully
+        break
+    clearScreen()
+    process_command(currentChar)

@@ -2,6 +2,7 @@ import sys
 from typing_extensions import Text
 from colors import blue
 from searchTree import SearchTree
+from utils import clearScreen
 
 #for entering text
 import sys
@@ -163,6 +164,33 @@ class Cursor:
 
         return letters_in_reverse[::-1]
 
+def process_command(inp):
+    if len(inp) == 1:
+        #letter
+        if input == ' ':
+            wordTree.insert(c.get_current_word())
+        b.write_char(inp)
+        return
+    if len(inp) == 2:
+        if inp[0] == 'm':
+            for command in vimMacros[inp[1]]:
+                process_command(command)
+            return
+        if inp[0] == 'r':
+            for letter in vimregisters[inp[1]]:
+                b.write_char(letter)
+            return
+
+        #motion
+        amount, command = inp
+        #will go into temperary command mode when working off single input
+        vimMotionMap[command](int(amount))
+    if len(inp) == 3:
+        if inp[:-1] == "di":
+            b.deleteInside((inp[-1]))
+        else:
+            vimCommandMap[inp]()
+
 
 
 
@@ -205,35 +233,7 @@ vimregisters = {
 
 
 
-def process_command(inp):
-    if len(inp) == 1:
-        #letter
-        if input == ' ':
-            wordTree.insert(c.get_current_word())
-        b.write_char(inp)
-        return
-    if len(inp) == 2:
-        if inp[0] == 'm':
-            for command in vimMacros[inp[1]]:
-                process_command(command)
-            return
-        if inp[0] == 'r':
-            for letter in vimregisters[inp[1]]:
-                b.write_char(letter)
-            return
 
-        #motion
-        amount, command = inp
-        #will go into temperary command mode when working off single input
-        vimMotionMap[command](int(amount))
-    if len(inp) == 3:
-        if inp[:-1] == "di":
-            b.deleteInside((inp[-1]))
-        else:
-            vimCommandMap[inp]()
-
-
-clearScreen =  lambda: print("\033[H\033[J", end='')
 
 
 

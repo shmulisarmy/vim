@@ -54,6 +54,12 @@ def process_command(inp):
 
     if c.mode == 'motion':
         command_key = inp
+        if c.previos_mode == 'delete':
+            c.enterGrabMode()
+            vimMotionMap[command_key](int(c.motion_amount))
+            b.backSpace()
+            c.mode = 'insert'
+            return
         vimMotionMap[command_key](int(c.motion_amount))
         temp = c.mode
         c.mode = c.previos_mode
@@ -90,9 +96,10 @@ vimMotionMap = {
     'b': c.b
 }
 
+
 vimCommandMap = {
     'g': c.enterGrabMode,
-    'b': b.backSpace,
+    'b': c.enterDeleteMode,
     'c': b.commandEnter,
 }
 

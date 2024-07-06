@@ -67,3 +67,10 @@ class Cursor:
             tempX-=1
 
         return letters_in_reverse[::-1]
+
+    def enterDeleteMode(self):
+        if self.mode == 'grab':
+            self.board_on.backSpace()
+            self.previos_mode = 'insert'
+            return
+        self.mode = 'delete'

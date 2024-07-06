@@ -114,21 +114,9 @@ vimregisters = {
 
 while True:
     clearScreen()
-    print(" - - - - - -")
-    clearScreen()
-    print(wordTree.root)
-    clearScreen()
-    print(f"{c.get_current_word() = }")
-    clearScreen()
-    print(wordTree.firstNThatStartWith(5, c.get_current_word()))
-    clearScreen()
-    print(" - - - - - -")
-    clearScreen()
     print(f"cursor mode = {c.mode}", end='\n')
     b.display()
-    clearScreen()
     currentChar = sys.stdin.read(1)
     if currentChar == '\x03':  # Handle Ctrl+C to exit the loop gracefully
         break
-    clearScreen()
     process_command(currentChar)

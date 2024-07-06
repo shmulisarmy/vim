@@ -25,32 +25,52 @@ wordTree = SearchTree()
 
 
 
+
+
+
 def process_command(inp):
-    if len(inp) == 1:
-        #letter
+    inp: str # len = 1
+    if c.mode == 'insert':
+        if inp == '+':
+            c.mode = 'command'
+            return
+        if inp in [str(i) for i in range(1, 10+1)]:
+            c.mode = 'motion'
+            c.motion_amount = int(inp)
+            return
         if input == ' ':
             wordTree.insert(c.get_current_word())
         b.write_char(inp)
         return
-    if len(inp) == 2:
-        if inp[0] == 'm':
-            for command in vimMacros[inp[1]]:
-                process_command(command)
-            return
-        if inp[0] == 'r':
-            for letter in vimregisters[inp[1]]:
-                b.write_char(letter)
-            return
+    if c.mode == 'command':
+        command_key = inp
+        vimCommandMap[command_key]()
+        c.mode = 'insert'
+        return
 
-        #motion
-        amount, command = inp
-        #will go into temperary command mode when working off single input
-        vimMotionMap[command](int(amount))
-    if len(inp) == 3:
-        if inp[:-1] == "di":
-            b.deleteInside((inp[-1]))
-        else:
-            vimCommandMap[inp]()
+
+
+    if c.mode == 'motion':
+        command_key = inp
+        vimMotionMap[command_key](int(c.motion_amount))
+        c.mode = 'insert'
+
+
+    # if inp[0] == 'm':
+    #     for command in vimMacros[inp[1]]:
+    #         process_command(command)
+    #     return
+    # if inp[0] == 'r':
+    #     for letter in vimregisters[inp[1]]:
+    #         b.write_char(letter)
+    #     return
+    #
+    #      if len(inp) == 3:
+    #         if inp[:-1] == "di":
+    #             b.deleteInside((inp[-1]))
+    #         else:
+    #             vimCommandMap[inp]()
+
 
 
 
@@ -67,9 +87,9 @@ vimMotionMap = {
 }
 
 vimCommandMap = {
-    'ggg': c.enterGrabMode,
-    'bbb': b.backSpace,
-    'ccc': b.commandEnter,
+    'g': c.enterGrabMode,
+    'b': b.backSpace,
+    'c': b.commandEnter,
 }
 
 
@@ -88,7 +108,6 @@ vimregisters = {
 
 
 
-exit()
 while True:
     clearScreen()
     print(" - - - - - -")
@@ -101,10 +120,10 @@ while True:
     clearScreen()
     print(" - - - - - -")
     clearScreen()
+    print(f"cursor mode = {c.mode}", end='\n')
     b.display()
     clearScreen()
     currentChar = sys.stdin.read(1)
-    print(f"{currentChar = }")
     if currentChar == '\x03':  # Handle Ctrl+C to exit the loop gracefully
         break
     clearScreen()

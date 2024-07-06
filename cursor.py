@@ -15,6 +15,7 @@ class Cursor:
         self.GrabStartPos_y = y
         self.mode = 'insert'
         self.board_on = None
+        self.motion_amount = 0
 
     def enterGrabMode(self):
         self.mode = 'grab'

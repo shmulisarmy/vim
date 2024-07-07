@@ -46,18 +46,30 @@ def process_command(inp):
         c.previos_mode = c.mode
         c.mode = 'insert'
         return
+
+    if c.mode =='register':
+        for letter in vimregisters[inp]:
+            b.write_char(letter)
+
+
+
     if c.mode == 'command':
+        if inp == 'm':
+            c.previos_mode = c.mode
+            c.mode = 'macro'
+            return
+        if inp == 'r':
+            c.mode = 'register'
+            c.previos_mode = c.mode
+            return
+
         command_key = inp
         vimCommandMap[command_key]()
         return
 
-        if inp == 'm':
-            c.mode = 'macro'
 
-        if inp == 'r':
-            for letter in vimregisters[inp[1]]:
-                b.write_char(letter)
-            return
+
+
 
         # if len(inp) == 3:
         # if inp[:-1] == "di":

@@ -70,7 +70,7 @@ class Cursor:
 
     def enterDeleteMode(self):
         if self.mode == 'grab':
-            self.board_on.backSpace()
+            b.backSpace()
             self.previos_mode = 'insert'
             return
         self.mode = 'delete'

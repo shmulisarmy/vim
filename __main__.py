@@ -1,19 +1,8 @@
-import sys
+import tkinter as tk
 from typing_extensions import Text
 from colors import blue
 from searchTree import SearchTree
 from utils import clearScreen
-
-#for entering text
-import sys
-import tty
-import termios
-
-
-fd = sys.stdin.fileno()
-tty.setraw(fd)
-#for entering text
-
 
 
 from __init__ import *
@@ -29,8 +18,11 @@ wordTree = SearchTree()
 
 
 def process_command(inp):
-    inp: str # len = 1
-    if inp == '+':
+    if inp == 'BackSpace':
+        c.enterDeleteMode()
+        return
+
+    if inp == 'Meta_R':
         c.previos_mode = c.mode
         c.mode = 'command'
         return
@@ -41,8 +33,10 @@ def process_command(inp):
         return
 
     if c.mode == 'insert':
-        if input == ' ':
+        if inp == 'space':
             wordTree.insert(c.get_current_word())
+            b.write_char(' ')
+            return
         b.write_char(inp)
         return
     if c.mode == 'command':
@@ -66,20 +60,20 @@ def process_command(inp):
         c.previos_mode = temp
 
 
-    # if inp[0] == 'm':
-    #     for command in vimMacros[inp[1]]:
-    #         process_command(command)
-    #     return
-    # if inp[0] == 'r':
-    #     for letter in vimregisters[inp[1]]:
-    #         b.write_char(letter)
-    #     return
-    #
-    #      if len(inp) == 3:
-    #         if inp[:-1] == "di":
-    #             b.deleteInside((inp[-1]))
-    #         else:
-    #             vimCommandMap[inp]()
+    if inp[0] == 'm':
+        for command in vimMacros[inp[1]]:
+            process_command(command)
+        return
+    if inp[0] == 'r':
+        for letter in vimregisters[inp[1]]:
+            b.write_char(letter)
+        return
+
+         if len(inp) == 3:
+            if inp[:-1] == "di":
+                b.deleteInside((inp[-1]))
+            else:
+                vimCommandMap[inp]()
 
 
 
@@ -117,13 +111,15 @@ vimregisters = {
 }
 
 
-
-
-while True:
-    clearScreen()
+def on_key_press(event):
+    currentChar = event.keysym
+    process_command(currentChar)
     print(f"cursor mode = {c.mode}", end='\n')
     b.display()
-    currentChar = sys.stdin.read(1)
-    if currentChar == '\x03':  # Handle Ctrl+C to exit the loop gracefully
-        break
-    process_command(currentChar)
+
+
+
+root = tk.Tk()
+root.geometry("400x200")
+root.bind('<KeyPress>', on_key_press)
+root.mainloop()

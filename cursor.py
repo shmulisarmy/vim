@@ -16,6 +16,7 @@ class Cursor:
         self.mode = 'insert'
         self.previos_mode = 'insert'
         self.board_on = None
+        self.board = None
         self.motion_amount = 0
 
     def enterGrabMode(self):
@@ -70,7 +71,7 @@ class Cursor:
 
     def enterDeleteMode(self):
         if self.mode == 'grab':
-            b.backSpace()
+            self.board.backSpace()
             self.previos_mode = 'insert'
             return
         self.mode = 'delete'

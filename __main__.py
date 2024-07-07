@@ -39,10 +39,31 @@ def process_command(inp):
             return
         b.write_char(inp)
         return
+
+    if c.mode == 'macro':
+        for command in vimMacros[inp]:
+            process_command(command)
+        c.previos_mode = c.mode
+        c.mode = 'insert'
+        return
     if c.mode == 'command':
         command_key = inp
         vimCommandMap[command_key]()
         return
+
+        if inp == 'm':
+            c.mode = 'macro'
+
+        if inp == 'r':
+            for letter in vimregisters[inp[1]]:
+                b.write_char(letter)
+            return
+
+        # if len(inp) == 3:
+        # if inp[:-1] == "di":
+        #     b.deleteInside((inp[-1]))
+        # else:
+        #     vimCommandMap[inp]()
 
 
 
@@ -60,20 +81,7 @@ def process_command(inp):
         c.previos_mode = temp
 
 
-    if inp[0] == 'm':
-        for command in vimMacros[inp[1]]:
-            process_command(command)
-        return
-    if inp[0] == 'r':
-        for letter in vimregisters[inp[1]]:
-            b.write_char(letter)
-        return
 
-         if len(inp) == 3:
-            if inp[:-1] == "di":
-                b.deleteInside((inp[-1]))
-            else:
-                vimCommandMap[inp]()
 
 
 
@@ -100,9 +108,9 @@ vimCommandMap = {
 
 vimMacros = {
     'd': [
-        'ggg',
-        '4b',
-        'bbb',
+        'BackSpace',
+        '4',
+        'b',
     ]
 }
 

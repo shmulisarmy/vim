@@ -9,4 +9,5 @@ b = board()
 
 
 c.board_on = b.TextArea
+c.board = b
 b.cursorList.append(c)

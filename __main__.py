@@ -18,17 +18,19 @@ wordTree = SearchTree()
 
 
 def process_command(inp):
+    if c.mode == 'delete' and inp == 'i':
+        c.mode = 'insert'
+        return
     if inp == 'BackSpace':
         c.enterDeleteMode()
         return
 
     if inp == 'Meta_R':
         c.previos_mode = c.mode
-        c.mode = 'command'
+        c.set_mode('command')
         return
     if inp in [str(i) for i in range(1, 10+1)]:
-        c.previos_mode = c.mode
-        c.mode = 'motion'
+        c.set_mode('motion')
         c.motion_amount = int(inp)
         return
 
@@ -43,8 +45,7 @@ def process_command(inp):
     if c.mode == 'macro':
         for command in vimMacros[inp]:
             process_command(command)
-        c.previos_mode = c.mode
-        c.mode = 'insert'
+        c.set_mode('insert')
         return
 
     if c.mode =='register':
@@ -55,12 +56,10 @@ def process_command(inp):
 
     if c.mode == 'command':
         if inp == 'm':
-            c.previos_mode = c.mode
-            c.mode = 'macro'
+            c.set_mode('macro')
             return
         if inp == 'r':
-            c.mode = 'register'
-            c.previos_mode = c.mode
+            c.set_mode('register')
             return
 
         command_key = inp
